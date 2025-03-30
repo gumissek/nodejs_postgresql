@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="header">
+        <h1>czesc</h1>
+        <h2>moje ksiazki</h2>
+    </div>
+    <div class="addForm">
+        <form action="/addBook" method="post">
+            <input type="text" name="title" id=""><br>
+            <input type="text" name="author" id=""><br>
+            <input type="text" name="isbn" id=""><br>
+
+            <textarea name="description" id=""></textarea>
+            <textarea name="review" id=""></textarea>
+            <input type="number" name="rating" id="" min="1" max="10" step="1"><br>
+            <input type="submit" value="Dodaj ksiazke">
+
+        </form>
+    </div>
+    <div class="bookShelf">
+        <% if (locals.books) { %> 
+        
+            <% books.forEach(book => { %>
+             <ul>
+                <li><%=book.id %> <input type="submit" value="<%=book.id%>" formaction="/deleteBook"></li>
+                <li><%=book.title %></li>
+                <li><%=book.author %></li>
+                <li><%=book.isbn %></li>
+
+                <li><%=book.description %></li>
+                <li><%=book.review %></li>
+                <li><%=book.rating %></li>
+             </ul>
+            <% }) %>
+            
+        <% }%>
+    </div>
+
+   
+</body>
+</html>
