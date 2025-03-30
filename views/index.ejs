@@ -7,28 +7,57 @@
 </head>
 <body>
     <div class="header">
-        <h1>czesc</h1>
-        <h2>moje ksiazki</h2>
+
+        <h2>My Books Collection</h2>
     </div>
     <div class="addForm">
-        <form action="/addBook" method="post">
-            <input type="text" name="title" id=""><br>
-            <input type="text" name="author" id=""><br>
-            <input type="text" name="isbn" id=""><br>
 
-            <textarea name="description" id=""></textarea>
-            <textarea name="review" id=""></textarea>
-            <input type="number" name="rating" id="" min="1" max="10" step="1"><br>
+        <h1>Add new book to shelf</h1>
+        <% if (locals.error) { %>
+         <h3><%= error %></h3>
+        <% } %>
+        <form action="/addBook" method="post">
+            <label for="title">New title</label>
+            <br>
+            <input type="text" name="title" id="" required>
+            <br>
+            <label for="author">New author</label>
+            <br>
+            <input type="text" name="author" id="" required>
+            <br>
+            <label for="isbn">Add ISBN code</label>
+            <br>
+            <input type="text" name="isbn" id="" required>
+            <br>
+            <label for="description">Add Description</label>
+            <br>
+            <textarea name="description" id="" required></textarea>
+            <br>
+            <label for="review">Add your review</label>
+            <br>
+            <textarea name="review" id="" required></textarea>
+            <br>
+            <label for="rating">Add your rating</label>
+            <br>
+            <input type="number" name="rating" id="" min="1" max="10" step="1" required>
+            <br>
             <input type="submit" value="Dodaj ksiazke">
 
         </form>
     </div>
     <div class="bookShelf">
+        <form action="/sort" method="post">
+            <select name="sorting" id="">
+                <option value="rating_asc">Rating Ascending</option>
+                <option value="rating_desc">Rating Descending</option>
+                <input type="submit" value="Sort">
+            </select>
+        </form>
         <% if (locals.books) { %> 
         
             <% books.forEach(book => { %>
              <ul>
-                <li><%=book.id %> <input type="submit" value="<%=book.id%>" formaction="/deleteBook"></li>
+                <li><%=book.id %> <form action="/deleteBook" method="post"><input type="submit" name="deleteBookId" value="<%=book.id%>" id=""></form></li>
                 <li><%=book.title %></li>
                 <li><%=book.author %></li>
                 <li><%=book.isbn %></li>

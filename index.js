@@ -41,10 +41,12 @@ db.connect();
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static('public'));
 
+let sortBy = 'rating';
+let ascdesc = 'DESC';
 // FUNCTIONS
 async function getBooksCollection() {
     let bookList=[];
-    let result = await db.query('SELECT * FROM books');
+    let result = await db.query(`SELECT * FROM books ORDER BY ${sortBy} ${ascdesc}`);
     result.rows.forEach(element => {
         let book={
             id:element.id,
@@ -65,7 +67,7 @@ async function getBooksCollection() {
 // ROUTES 
 app.get('/',async (req,res)=>{
     const books=await getBooksCollection();
-    console.log(books);
+    // console.log(books);
     res.render('index.ejs',{books:books});
 });
 
@@ -75,13 +77,18 @@ app.post('/addBook',async (req,res)=>{
     let description = req.body.description;
     let review = req.body.review;
     let rating = req.body.rating;
-    let isbn = req.body.isbn
+    let isbn = req.body.isbn;
+    const books= await getBooksCollection();
     try {
         let result = await db.query('SELECT * FROM books WHERE title=$1',[title]);
-        if (result.rows.lenght>0) {
-            // nie ma ksiazki o takiej nazwie 
+        // console.log(result.rows)
+        if (result.rows.length>0) {
+            console.log('Jest taka ksiazka, nie dodajemy do bazy')
+            res.render('index.ejs',{books:books,error:'That book already exists in your shelf.'});
         }else{
-
+            await db.query(`INSERT INTO books (title,author,description,isbn,review,rating) VALUES ($1,$2,$3,$4,$5,$6)`
+                ,[title,author,description,isbn,review,rating]);
+            res.redirect('/');
         };
     } catch (error) {
         console.log(error);
@@ -89,7 +96,26 @@ app.post('/addBook',async (req,res)=>{
     }
 });
 
+app.post('/deleteBook',async (req,res)=>{
+    let bookId = req.body.deleteBookId;
 
+    try {
+        await db.query('DELETE FROM books WHERE id=$1',[bookId]);
+        const books =  await getBooksCollection();
+        res.render('index.ejs',{books:books,error:'Book has been deleted from shelf.'});
+    } catch (error) {
+        console.log(error);
+        res.redirect('/');
+    }
+});
+
+app.post('/sort',(req,res)=>{
+    let sort = String(req.body.sorting).split('_')[0].toLowerCase();
+    let asc_desc = String(req.body.sorting).split('_')[1].toLocaleUpperCase();
+    sortBy=sort;
+    ascdesc=asc_desc;
+    res.redirect('/');
+});
 
 
 app.listen(port,()=>{
