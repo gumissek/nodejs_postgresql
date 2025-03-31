@@ -8,7 +8,7 @@ import pg from 'pg';
 const app = express();
 const port = 5001;
 
-
+// CHANGE YOUR DEATAILS TO DATABASE
 const db = new pg.Client({
     user:'postgres',
     password:'12345',
@@ -17,6 +17,9 @@ const db = new pg.Client({
     port:5432,
 });
 db.connect();
+
+
+
 let book1={
     title:'Dziady III',
     author:'Adam Mickiewicz',
@@ -33,7 +36,7 @@ let book2={
     review:'Lubie do tego wracac',
     rating:9,
 }
-// await db.query(`DROP TABLE IF EXISTS books;CREATE TABLE books (id SERIAL PRIMARY KEY,title TEXT UNIQUE NOT NULL,author TEXT NOT NULL,description TEXT NOT NULL,img_link TEXT NOT NULL,review TEXT NOT NULL,rating INT NOT NULL);INSERT INTO books (title,author,description,img_link,review,rating) VALUES ('${book1.title}','${book1.author}','${book1.description}','${book1.img_link}','${book1.review}',${book1.rating}),('${book2.title}','${book2.author}','${book2.description}','${book2.img_link}','${book2.review}',${book2.rating})`);
+await db.query(`DROP TABLE IF EXISTS books;CREATE TABLE books (id SERIAL PRIMARY KEY,title TEXT UNIQUE NOT NULL,author TEXT NOT NULL,description TEXT NOT NULL,img_link TEXT NOT NULL,review TEXT NOT NULL,rating INT NOT NULL);INSERT INTO books (title,author,description,img_link,review,rating) VALUES ('${book1.title}','${book1.author}','${book1.description}','${book1.img_link}','${book1.review}',${book1.rating}),('${book2.title}','${book2.author}','${book2.description}','${book2.img_link}','${book2.review}',${book2.rating})`);
 
 
 // MIDDLEWARE
