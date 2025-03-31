@@ -1,0 +1,219 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Nagłówek */
+.header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.header h2 {
+    font-size: 36px;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+/* Formularz dodawania książki */
+.addForm {
+    background-color: white;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.addForm h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.addForm label {
+    font-size: 16px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.addForm input, .addForm textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.addForm input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 4px;
+}
+
+.addForm input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+.addForm textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Książki na półce */
+.bookShelf {
+    margin-top: 40px;
+}
+
+.bookShelf h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.bookShelf form {
+    margin-bottom: 20px;
+}
+
+.bookShelf select, .bookShelf input[type="submit"] {
+    padding: 10px;
+    font-size: 16px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.bookShelf input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}
+
+.bookShelf input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+.book {
+    width: 100%;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 20px;
+    display: flex;
+}
+
+.book ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.book li {
+    margin: 10px 0;
+}
+
+.book img {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.book h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+/* Przycisk edycji */
+.book .buttonEdit {
+    background-color: #ffa500;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px;
+}
+
+
+/* Responsywność */
+@media (min-width: 768px) {
+    
+
+    .book img {
+        max-width: 150px;
+        margin-right: 20px;
+    }
+}
+
+@media (max-width: 767px) {
+    
+
+    .book img {
+        max-width: 100%;
+        margin-right: 0;
+    }
+}
+
+
+/* Styl dla pola input w ratingEdit */
+.ratingEdit {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+}
+
+.ratingEdit:focus {
+    border-color: #4CAF50; /* Zielona ramka po kliknięciu */
+    outline: none;
+}
+
+/* Styl dla textarea w reviewEdit */
+.reviewEdit {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    resize: vertical;
+    min-height: 120px;
+    transition: border-color 0.3s ease;
+}
+
+.reviewEdit:focus{
+    border-color: #4CAF50; /* Zielona ramka po kliknięciu */
+    outline: none;
+}
+
+/* Dodatkowe efekty dla focus na input i textarea */
+.book .editSection input[type="number"]:focus, 
+.book .editSection textarea:focus {
+    background-color: #f0fff0; /* Jasnozielone tło podczas edytowania */
+}
