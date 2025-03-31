@@ -25,9 +25,9 @@
             <br>
             <input type="text" name="author" id="" required>
             <br>
-            <label for="isbn">Add ISBN code</label>
+            <label for="img_link">Add image link to cover</label>
             <br>
-            <input type="text" name="isbn" id="" required>
+            <input type="url" name="img_link" id="" required>
             <br>
             <label for="description">Add Description</label>
             <br>
@@ -46,29 +46,53 @@
         </form>
     </div>
     <div class="bookShelf">
+        <hr>
+        <h2>My Shelf</h2>
         <form action="/sort" method="post">
             <select name="sorting" id="">
                 <option value="rating_asc">Rating Ascending</option>
                 <option value="rating_desc">Rating Descending</option>
-                <input type="submit" value="Sort">
+                <option value="title_asc">Title Ascending</option>
+                <option value="title_desc">Title Descending</option>
+                
             </select>
+            <input type="submit" value="Sort">
         </form>
         <% if (locals.books) { %> 
         
             <% books.forEach(book => { %>
              <ul>
-                <li><%=book.id %> <form action="/deleteBook" method="post"><input type="submit" name="deleteBookId" value="<%=book.id%>" id=""></form></li>
-                <li><%=book.title %></li>
-                <li><%=book.author %></li>
-                <li><%=book.isbn %></li>
+                <li><form action="/deleteBook" method="post"><input type="checkbox" onchange="this.form.submit()" name="deleteBookId" value="<%=book.id%>" id=""><label for="deleteBookId">Delete book from shelf</label></form></li>
+                <li>Title: <%=book.title %></li>
+                <li>Author: <%=book.author %></li>
+                <li><img src="<%=book.img_link %> " alt="<%=book.title %> cover"></li>
 
-                <li><%=book.description %></li>
-                <li><%=book.review %></li>
-                <li><%=book.rating %></li>
+                <li>Description: <%=book.description %></li>
+                <form action="/edit" method="post">
+                    <input type="hidden" name="updatedId" value="<%=book.id %>">
+                    <li hidden="true" id="reviewEdit<%=book.id %>"><textarea name="updatedReview" id=""><%=book.review  %></textarea></li>
+                    <li hidden="true" id="ratingEdit<%=book.id %>"><input name="updatedRating" type="number" min="1" max="10" value="<%=book.rating %>"></li>
+                    <li hidden="true" id="buttonEdit<%=book.id %>"><input type="submit" value="Apply changes"></li>
+                </form>
+                <li id="review<%=book.id %>">My review: <%=book.review %></li>
+                <li id="rating<%=book.id %>">Rating: <%=book.rating %>/10</li>
+                <li id="button<%=book.id %>"><button  onclick="hide('<%=book.id%>')">Edit details</button></li>
              </ul>
             <% }) %>
             
         <% }%>
+        <script>
+            function hide(id) {
+                document.getElementById("review"+id).setAttribute("hidden",true);
+                document.getElementById("rating"+id).setAttribute("hidden",true);
+                document.getElementById("button"+id).setAttribute("hidden",true);
+                document.getElementById("ratingEdit"+id).removeAttribute("hidden");
+                document.getElementById("reviewEdit"+id).removeAttribute("hidden");
+                document.getElementById("buttonEdit"+id).removeAttribute("hidden");
+
+
+            }
+        </script>
     </div>
 
    

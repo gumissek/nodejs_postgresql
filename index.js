@@ -1,18 +1,9 @@
-// OK buduje strone gdzie do bazy danych bede mogl dodawac , ksizaki
-// OK baza danych 
-// OK tabela ksiazki id, tytul, autor, moja recenzja , krotki opis , ocena, isbn-13 kod jakis ksiazki jako PRIMARY KEY
 
 // uzycie api do pobrania okladki ksiazki 
 
 //https://www.postman.com/cs-demo/public-rest-apis/request/axmdplg/covers
 // open library api to get cover
-// funkcja do pobierania ksiazek z bazy danych zwraca liste
-// strona add bookk do dodawania ksiazek sprawdza czy taki isbn jest w bazie
-// express 
-// body-parser
-// pg
-// axios
-// ejs
+
 // potem jakis front do tego i super
 
 import express from 'express';
@@ -34,7 +25,7 @@ const db = new pg.Client({
 });
 db.connect();
 
-// await db.query("DROP TABLE IF EXISTS books;CREATE TABLE books (id SERIAL PRIMARY KEY,title TEXT UNIQUE NOT NULL,author TEXT NOT NULL,description TEXT NOT NULL,isbn TEXT NOT NULL,review TEXT NOT NULL,rating INT NOT NULL);INSERT INTO books (title,author,description,isbn,review,rating) VALUES ('Dziady III','Adam Mickiewicz','Lektura szkolna taka i taka lorem ipsum','brak','dostalem szmate :3',6),('Harry Potter i Kamien filozoficzny','J.K. Rowling','Historia o chłopcu czarodzieju','9788382654462','Lubie do tego wracac',10);;");
+await db.query("DROP TABLE IF EXISTS books;CREATE TABLE books (id SERIAL PRIMARY KEY,title TEXT UNIQUE NOT NULL,author TEXT NOT NULL,description TEXT NOT NULL,img_link TEXT NOT NULL,review TEXT NOT NULL,rating INT NOT NULL);INSERT INTO books (title,author,description,img_link,review,rating) VALUES ('Dziady III','Adam Mickiewicz','Lektura szkolna taka i taka lorem ipsum','https://wolnelektury.pl/media/book/cover_clean/dziady-dziady-poema-dziady-czesc-iii_rSHPOVu.jpg','dostalem szmate :3',6),('Harry Potter i Kamien filozoficzny','J.K. Rowling','Historia o chłopcu czarodzieju','https://ecsmedia.pl/cdn-cgi/image/format=webp,width=544,height=544,/c/harry-potter-i-kamien-filozoficzny-edycja-jubileuszowa-b-iext179282901.jpg','Lubie do tego wracac',10);;");
 
 
 // MIDDLEWARE
@@ -53,7 +44,7 @@ async function getBooksCollection() {
             title:element.title,
             author:element.author,
             description:element.description,
-            isbn:element.isbn,
+            img_link:element.img_link,
             review:element.review,
             rating:element.rating
         };
@@ -72,12 +63,12 @@ app.get('/',async (req,res)=>{
 });
 
 app.post('/addBook',async (req,res)=>{
-    let author = req.body.author;
-    let title = req.body.title;
-    let description = req.body.description;
-    let review = req.body.review;
+    let author = String(req.body.author).trim();
+    let title = String(req.body.title).trim();
+    let description = String(req.body.description).trim();
+    let review = String(req.body.review).trim();
     let rating = req.body.rating;
-    let isbn = req.body.isbn;
+    let img_link = String(req.body.img_link).trim();
     const books= await getBooksCollection();
     try {
         let result = await db.query('SELECT * FROM books WHERE title=$1',[title]);
@@ -86,8 +77,8 @@ app.post('/addBook',async (req,res)=>{
             console.log('Jest taka ksiazka, nie dodajemy do bazy')
             res.render('index.ejs',{books:books,error:'That book already exists in your shelf.'});
         }else{
-            await db.query(`INSERT INTO books (title,author,description,isbn,review,rating) VALUES ($1,$2,$3,$4,$5,$6)`
-                ,[title,author,description,isbn,review,rating]);
+            await db.query(`INSERT INTO books (title,author,description,img_link,review,rating) VALUES ($1,$2,$3,$4,$5,$6)`
+                ,[title,author,description,img_link,review,rating]);
             res.redirect('/');
         };
     } catch (error) {
@@ -115,6 +106,22 @@ app.post('/sort',(req,res)=>{
     sortBy=sort;
     ascdesc=asc_desc;
     res.redirect('/');
+});
+
+app.post('/edit', async (req,res)=>{
+    let bookId = req.body.updatedId;
+    let newReview = String(req.body.updatedReview).trim();
+    let newRating=req.body.updatedRating;
+
+    try {
+        await db.query(`UPDATE books SET review=$1,rating=$2 WHERE id=$3`,[newReview,newRating,bookId]);
+        res.redirect('/');
+    } catch (error) {
+        console.log(error);
+        res.redirect('/');
+    }
+
+
 });
 
 
