@@ -1,11 +1,4 @@
 
-// uzycie api do pobrania okladki ksiazki 
-
-//https://www.postman.com/cs-demo/public-rest-apis/request/axmdplg/covers
-// open library api to get cover
-
-// potem jakis front do tego i super
-
 import express from 'express';
 import bodyParser from 'body-parser';
 import axios from 'axios';
@@ -24,8 +17,23 @@ const db = new pg.Client({
     port:5432,
 });
 db.connect();
-
-await db.query("DROP TABLE IF EXISTS books;CREATE TABLE books (id SERIAL PRIMARY KEY,title TEXT UNIQUE NOT NULL,author TEXT NOT NULL,description TEXT NOT NULL,img_link TEXT NOT NULL,review TEXT NOT NULL,rating INT NOT NULL);INSERT INTO books (title,author,description,img_link,review,rating) VALUES ('Dziady III','Adam Mickiewicz','Lektura szkolna taka i taka lorem ipsum','https://wolnelektury.pl/media/book/cover_clean/dziady-dziady-poema-dziady-czesc-iii_rSHPOVu.jpg','dostalem szmate :3',6),('Harry Potter i Kamien filozoficzny','J.K. Rowling','Historia o chłopcu czarodzieju','https://ecsmedia.pl/cdn-cgi/image/format=webp,width=544,height=544,/c/harry-potter-i-kamien-filozoficzny-edycja-jubileuszowa-b-iext179282901.jpg','Lubie do tego wracac',10);;");
+let book1={
+    title:'Dziady III',
+    author:'Adam Mickiewicz',
+    description:'Lektura szkolna taka i taka lorem ipsum taka lorem ipsumtaka lorem ipsumtaka lorem ipsumtaka lorem ipsumtaka lorem ipsumtaka lorem ipsumtaka lorem ipsumtaka lorem ipsumtaka lorem ipsumtaka lorem ipsumtaka lorem ipsum',
+    img_link:'https://wolnelektury.pl/media/book/cover_clean/dziady-dziady-poema-dziady-czesc-iii_rSHPOVu.jpg',
+    review:'dostalem nienajlepsza ocene :3',
+    rating:6,
+}
+let book2={
+    title:'Harry Potter i Kamien filozoficzny',
+    author:'J.K. Rowling',
+    description:'Historia o chłopcu czarodzieju',
+    img_link:'https://ecsmedia.pl/cdn-cgi/image/format=webp,width=544,height=544,/c/harry-potter-i-kamien-filozoficzny-edycja-jubileuszowa-b-iext179282901.jpg',
+    review:'Lubie do tego wracac',
+    rating:9,
+}
+// await db.query(`DROP TABLE IF EXISTS books;CREATE TABLE books (id SERIAL PRIMARY KEY,title TEXT UNIQUE NOT NULL,author TEXT NOT NULL,description TEXT NOT NULL,img_link TEXT NOT NULL,review TEXT NOT NULL,rating INT NOT NULL);INSERT INTO books (title,author,description,img_link,review,rating) VALUES ('${book1.title}','${book1.author}','${book1.description}','${book1.img_link}','${book1.review}',${book1.rating}),('${book2.title}','${book2.author}','${book2.description}','${book2.img_link}','${book2.review}',${book2.rating})`);
 
 
 // MIDDLEWARE

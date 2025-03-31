@@ -3,97 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>My Books Collection</title>
+    <link rel="stylesheet" href="/styles/style.css">
 </head>
 <body>
-    <div class="header">
+    <div class="container">
+        <div class="header">
 
-        <h2>My Books Collection</h2>
-    </div>
-    <div class="addForm">
-
-        <h1>Add new book to shelf</h1>
-        <% if (locals.error) { %>
-         <h3><%= error %></h3>
-        <% } %>
-        <form action="/addBook" method="post">
-            <label for="title">New title</label>
-            <br>
-            <input type="text" name="title" id="" required>
-            <br>
-            <label for="author">New author</label>
-            <br>
-            <input type="text" name="author" id="" required>
-            <br>
-            <label for="img_link">Add image link to cover</label>
-            <br>
-            <input type="url" name="img_link" id="" required>
-            <br>
-            <label for="description">Add Description</label>
-            <br>
-            <textarea name="description" id="" required></textarea>
-            <br>
-            <label for="review">Add your review</label>
-            <br>
-            <textarea name="review" id="" required></textarea>
-            <br>
-            <label for="rating">Add your rating</label>
-            <br>
-            <input type="number" name="rating" id="" min="1" max="10" step="1" required>
-            <br>
-            <input type="submit" value="Dodaj ksiazke">
-
-        </form>
-    </div>
-    <div class="bookShelf">
-        <hr>
-        <h2>My Shelf</h2>
-        <form action="/sort" method="post">
-            <select name="sorting" id="">
-                <option value="rating_asc">Rating Ascending</option>
-                <option value="rating_desc">Rating Descending</option>
-                <option value="title_asc">Title Ascending</option>
-                <option value="title_desc">Title Descending</option>
-                
-            </select>
-            <input type="submit" value="Sort">
-        </form>
-        <% if (locals.books) { %> 
+            <h2 id="git">My Books Collection - click</h2>
+            <script>
+                document.getElementById('git').addEventListener('click',()=>{
+                    window.open('https://github.com/gumissek/nodejs_postgresql','_blank')
+                })
+            </script>
+        </div>
+        <div class="addForm">
+            <h1>Add new book to shelf</h1>
+            <% if (locals.error) { %>
+             <h3><%= error %></h3>
+            <% } %>
+            <form action="/addBook" method="post">
+                <label for="title">New title</label>
+                <br>
+                <input type="text" name="title" id="" required>
+                <br>
+                <label for="author">New author</label>
+                <br>
+                <input type="text" name="author" id="" required>
+                <br>
+                <label for="img_link">Add image link to cover</label>
+                <br>
+                <input type="url" name="img_link" id="" required>
+                <br>
+                <label for="description">Add Description</label>
+                <br>
+                <textarea name="description" id="" required></textarea>
+                <br>
+                <label for="review">Add your review</label>
+                <br>
+                <textarea name="review" id="" required></textarea>
+                <br>
+                <label for="rating">Add your rating</label>
+                <br>
+                <input type="number" name="rating" id="" min="1" max="10" step="1" required>
+                <br>
+                <input type="submit" value="Add new book to shelf">
+    
+            </form>
+        </div>
+        <div class="bookShelf">
         
-            <% books.forEach(book => { %>
-             <ul>
-                <li><form action="/deleteBook" method="post"><input type="checkbox" onchange="this.form.submit()" name="deleteBookId" value="<%=book.id%>" id=""><label for="deleteBookId">Delete book from shelf</label></form></li>
-                <li>Title: <%=book.title %></li>
-                <li>Author: <%=book.author %></li>
-                <li><img src="<%=book.img_link %> " alt="<%=book.title %> cover"></li>
-
-                <li>Description: <%=book.description %></li>
-                <form action="/edit" method="post">
-                    <input type="hidden" name="updatedId" value="<%=book.id %>">
-                    <li hidden="true" id="reviewEdit<%=book.id %>"><textarea name="updatedReview" id=""><%=book.review  %></textarea></li>
-                    <li hidden="true" id="ratingEdit<%=book.id %>"><input name="updatedRating" type="number" min="1" max="10" value="<%=book.rating %>"></li>
-                    <li hidden="true" id="buttonEdit<%=book.id %>"><input type="submit" value="Apply changes"></li>
-                </form>
-                <li id="review<%=book.id %>">My review: <%=book.review %></li>
-                <li id="rating<%=book.id %>">Rating: <%=book.rating %>/10</li>
-                <li id="button<%=book.id %>"><button  onclick="hide('<%=book.id%>')">Edit details</button></li>
-             </ul>
-            <% }) %>
+            <h2>My Shelf:</h2>
+            <form action="/sort" method="post">
+                <select name="sorting" id="">
+                    <option value="rating_asc">Rating Ascending</option>
+                    <option value="rating_desc">Rating Descending</option>
+                    <option value="title_asc">Title Ascending</option>
+                    <option value="title_desc">Title Descending</option>
+                    
+                </select>
+                <input type="submit" value="Sort">
+            </form>
+            <% if (locals.books) { %> 
             
-        <% }%>
-        <script>
-            function hide(id) {
-                document.getElementById("review"+id).setAttribute("hidden",true);
-                document.getElementById("rating"+id).setAttribute("hidden",true);
-                document.getElementById("button"+id).setAttribute("hidden",true);
-                document.getElementById("ratingEdit"+id).removeAttribute("hidden");
-                document.getElementById("reviewEdit"+id).removeAttribute("hidden");
-                document.getElementById("buttonEdit"+id).removeAttribute("hidden");
-
-
-            }
-        </script>
+                <% books.forEach(book => { %>
+                <div class="book">    
+                    <ul>
+                        <li><form action="/deleteBook" method="post"><input type="checkbox" onchange="this.form.submit()" name="deleteBookId" value="<%=book.id%>" id=""><label for="deleteBookId"> Delete book from shelf</label></form></li>
+                        <li>Title: <%=book.title %></li>
+                        <li>Author: <%=book.author %></li>
+                        <li><img src="<%=book.img_link %> " alt="<%=book.title %> cover"></li>
+    
+                        <li>Description:<br> <%=book.description %></li>
+                        <form action="/edit" method="post">
+                            <input type="hidden" name="updatedId" value="<%=book.id %>">
+                            <li hidden="true" id="reviewEdit<%=book.id %>"><textarea class="reviewEdit" name="updatedReview" id=""><%=book.review  %></textarea></li>
+                            <li hidden="true" id="ratingEdit<%=book.id %>"><input class="ratingEdit" name="updatedRating" type="number" min="1" max="10" value="<%=book.rating %>"></li>
+                            <li hidden="true" id="buttonEdit<%=book.id %>"><input class="buttonEdit" type="submit" value="Apply changes"></li>
+                        </form>
+                        <li id="review<%=book.id %>">My review: <br> <%=book.review %></li>
+                        <li id="rating<%=book.id %>">Rating: <%=book.rating %>/10</li>
+                        <li id="button<%=book.id %>"><button class="buttonEdit" onclick="hide('<%=book.id%>')">Edit details</button></li>
+                    </ul>
+                </div>
+                <% }) %>
+                
+            <% }%>
+            <script>
+                function hide(id) {
+                    document.getElementById("review"+id).setAttribute("hidden",true);
+                    document.getElementById("rating"+id).setAttribute("hidden",true);
+                    document.getElementById("button"+id).setAttribute("hidden",true);
+                    document.getElementById("ratingEdit"+id).removeAttribute("hidden");
+                    document.getElementById("reviewEdit"+id).removeAttribute("hidden");
+                    document.getElementById("buttonEdit"+id).removeAttribute("hidden");
+    
+    
+                }
+            </script>
+        </div>
     </div>
+    
+    
+    
 
    
 </body>
